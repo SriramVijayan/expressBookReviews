@@ -70,6 +70,14 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 //   return res.status(300).json({message: "Yet to be implemented"});
 });
 
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const username = req.session.authorization['username'];
+    const isbn_code = parseInt(req.params.isbn);
+
+    let bookReviews = books[isbn_code]["reviews"];
+    reviewUsers = Object.keys(bookReviews);
+});
+
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
