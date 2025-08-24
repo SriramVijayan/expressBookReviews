@@ -43,7 +43,6 @@ regd_users.post("/login", (req,res) => {
   } else {
     res.status(208).json({message: "Invalid login. Please check username and password"});
   }
-//   return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Add a book review
@@ -66,8 +65,6 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   books[parseInt(isbn_code)]["reviews"] = bookreviews;
 
   res.send(books[parseInt(isbn_code)]);
-
-//   return res.status(300).json({message: "Yet to be implemented"});
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
@@ -75,7 +72,14 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     const isbn_code = parseInt(req.params.isbn);
 
     let bookReviews = books[isbn_code]["reviews"];
-    reviewUsers = Object.keys(bookReviews);
+    let reviewUsers = Object.keys(bookReviews);
+    let targetUser = reviewUsers.find((user) => user == username);
+    if (targetUser) {
+        delete bookReviews[targetUser];
+    }
+    
+    books[isbn_code]["reviews"] = bookReviews;
+    res.send(books[isbn_code]);
 });
 
 module.exports.authenticated = regd_users;
