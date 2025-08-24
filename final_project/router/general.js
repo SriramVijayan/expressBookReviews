@@ -26,27 +26,28 @@ public_users.post("/register", (req,res) => {
   }
 });
 
+async function getAllBooks(req, res) {
+    res.send(JSON.stringify(books,null,10));
+}
+
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
+  getAllBooks(req, res);
+});
 
+public_users.get('/isbn/:isbn',function (req, res) {
+  //Write your code here
+  let book_by_isbn = {};
   let myPromise = new Promise((resolve, reject) => {
+    const isbn = parseInt(req.params.isbn);
+    book_by_isbn = books[isbn];
     resolve("Success");
   })
 
   myPromise.then((successMessage) => {
-    res.send(JSON.stringify(books,null,10));
-  })
-});
-
-async function asyncFunction(req, res) {
-    const isbn = req.params.isbn;
-    res.send(books[isbn]);
-}
-
-public_users.get('/isbn/:isbn',function (req, res) {
-  //Write your code here
-  asyncFunction(req, res);
+    res.send(book_by_isbn);
+  });
  });
   
 // Get book details based on author
